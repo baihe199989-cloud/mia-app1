@@ -1,6 +1,5 @@
 export default async function handler(req, res) {
 
-  // 允许跨域（必须有这几行）
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -10,7 +9,6 @@ export default async function handler(req, res) {
   const { message } = req.body;
 
   try {
-    // 第一步：发起对话
     const chatRes = await fetch('https://api.coze.com/v3/chat', {
       method: 'POST',
       headers: {
@@ -34,7 +32,6 @@ export default async function handler(req, res) {
     const chatId = chatData.data.id;
     const convId = chatData.data.conversation_id;
 
-    // 第二步：等待AI回复（最多等18秒）
     let reply = '能量正在传递中…';
     for (let i = 0; i < 30; i++) {
       await new Promise(r => setTimeout(r, 600));
