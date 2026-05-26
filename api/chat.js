@@ -40,14 +40,14 @@ export default async function handler(req, res) {
       await new Promise(r => setTimeout(r, 600));
 
       const statusRes = await fetch(
-        `https://api.coze.cn/v3/chat/retrieve?chat_id=${chatId}&conversation_id=${convId}`,
+        `https://api.coze.com/v3/chat/retrieve?chat_id=${chatId}&conversation_id=${convId}`,
         { headers: { 'Authorization': `Bearer ${process.env.COZE_TOKEN}` } }
       );
       const statusData = await statusRes.json();
 
       if (statusData.data.status === 'completed') {
         const msgRes = await fetch(
-          `https://api.coze.cn/v3/chat/message/list?chat_id=${chatId}&conversation_id=${convId}`,
+          `https://api.coze.com/v3/chat/message/list?chat_id=${chatId}&conversation_id=${convId}`,
           { headers: { 'Authorization': `Bearer ${process.env.COZE_TOKEN}` } }
         );
         const msgData = await msgRes.json();
