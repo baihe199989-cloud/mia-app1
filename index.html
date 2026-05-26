@@ -3,274 +3,464 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>GAMMA-X · 意识觉醒</title><style>
-:root{--void:#0B0715;--deep:#030209;--p:#8B5CF6;--p2:#6D28D9;--pg:rgba(139,92,246,0.18);--pgf:rgba(139,92,246,0.06);--gold:#C9A84C;--gf:rgba(201,168,76,0.08);--t:rgba(255,255,255,0.88);--td:rgba(255,255,255,0.4);--tf:rgba(255,255,255,0.12)}
+<title>GAMMA-X · 意识觉醒矩阵</title>
+<style>
+:root{
+  --bg:#03020a;--p:#7C3AED;--p2:#5B21B6;--pg:rgba(124,58,237,.15);--pgf:rgba(124,58,237,.06);
+  --gold:#C9A84C;--gold2:#E8C97E;--goldf:rgba(201,168,76,.08);
+  --t:rgba(255,255,255,.9);--td:rgba(255,255,255,.45);--tf:rgba(255,255,255,.12);
+  --border:rgba(124,58,237,.12);--border2:rgba(201,168,76,.2);
+}
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;background:var(--deep);color:var(--t);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Arial,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased}
-#cosmos{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 25% 20%,rgba(88,28,135,.18) 0%,transparent 55%),radial-gradient(ellipse at 75% 80%,rgba(59,7,100,.14) 0%,transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(15,5,30,.9) 0%,transparent 100%),linear-gradient(180deg,#0B0715 0%,#030209 100%)}
-#sc{position:fixed;inset:0;z-index:1;opacity:.55}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--t);
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;
+  overflow:hidden;-webkit-font-smoothing:antialiased}
+canvas#sc{position:fixed;inset:0;z-index:0}
+#nebula{position:fixed;inset:0;z-index:1;
+  background:radial-gradient(ellipse at 20% 15%,rgba(88,28,135,.22) 0%,transparent 50%),
+             radial-gradient(ellipse at 80% 85%,rgba(109,40,217,.16) 0%,transparent 45%),
+             radial-gradient(ellipse at 60% 40%,rgba(201,168,76,.04) 0%,transparent 40%),
+             radial-gradient(ellipse at 10% 70%,rgba(59,7,100,.18) 0%,transparent 45%);
+  animation:nb 15s ease-in-out infinite;pointer-events:none}
+@keyframes nb{
+  0%,100%{background:radial-gradient(ellipse at 20% 15%,rgba(88,28,135,.22) 0%,transparent 50%),radial-gradient(ellipse at 80% 85%,rgba(109,40,217,.16) 0%,transparent 45%),radial-gradient(ellipse at 60% 40%,rgba(201,168,76,.04) 0%,transparent 40%),radial-gradient(ellipse at 10% 70%,rgba(59,7,100,.18) 0%,transparent 45%)}
+  50%{background:radial-gradient(ellipse at 70% 25%,rgba(109,40,217,.2) 0%,transparent 50%),radial-gradient(ellipse at 25% 75%,rgba(88,28,135,.15) 0%,transparent 45%),radial-gradient(ellipse at 50% 50%,rgba(201,168,76,.05) 0%,transparent 40%),radial-gradient(ellipse at 85% 20%,rgba(59,7,100,.16) 0%,transparent 45%)}
+}
 #app{position:relative;z-index:2;width:100%;height:100%}
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;padding-bottom:72px;opacity:0;pointer-events:none;transition:opacity .5s ease;overflow-y:auto}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;
+  padding-bottom:72px;opacity:0;pointer-events:none;transition:opacity .6s;overflow-y:auto}
 .screen.active{opacity:1;pointer-events:all}
-.screen::-webkit-scrollbar{width:2px}
-.screen::-webkit-scrollbar-thumb{background:rgba(139,92,246,.25);border-radius:1px}
-#nav{position:fixed;bottom:0;left:0;right:0;height:72px;z-index:100;display:flex;align-items:center;justify-content:space-around;background:rgba(8,4,18,.9);backdrop-filter:blur(24px);border-top:1px solid rgba(139,92,246,.06)}
-.ni{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:8px 14px;opacity:.3;transition:all .3s}
-.ni.active{opacity:1}.ni:hover{opacity:.65;transform:translateY(-2px)}
-.ni-ic{font-size:17px}.ni-lb{font-size:8px;letter-spacing:.12em;color:rgba(255,255,255,.5)}
-.ni.active .ni-lb{color:var(--p)}
-.glass{background:var(--pgf);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(139,92,246,.1);border-radius:16px}
-.glow{text-shadow:0 0 24px rgba(139,92,246,.7),0 0 48px rgba(139,92,246,.3)}
-.lbl{font-size:9px;letter-spacing:.5em;color:var(--p);opacity:.7;text-transform:uppercase;margin-bottom:8px}
-.ttl{font-size:22px;font-weight:200;letter-spacing:.1em}
-#home{align-items:center;justify-content:center;gap:48px}
-.hd{text-align:center}
-.ht{font-size:44px;font-weight:200;letter-spacing:.35em;margin-bottom:6px}
-.hs{font-size:9px;letter-spacing:.6em;color:var(--p);opacity:.6;text-transform:uppercase}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 28px;max-width:380px;width:100%}
-.pc{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;border-radius:20px;transition:transform .4s,box-shadow .4s}
-.pc:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 24px 64px rgba(139,92,246,.25)}
-.pc:nth-child(1){animation:fl 4s ease-in-out infinite}
-.pc:nth-child(2){animation:fl 4s ease-in-out infinite .8s}
-.pc:nth-child(3){animation:fl 4s ease-in-out infinite 1.6s}
-.pc:nth-child(4){animation:fl 4s ease-in-out infinite 2.4s}
-.pi{font-size:26px;filter:drop-shadow(0 0 8px rgba(139,92,246,.7))}
-.pn{font-size:11px;letter-spacing:.12em;color:var(--td);text-align:center}
-.pnum{font-size:9px;letter-spacing:.3em;color:var(--p);opacity:.5}
-@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-#test{padding:56px 22px 80px}
-.sh{text-align:center;margin-bottom:32px}
-.qb{margin-bottom:22px}
-.qt{font-size:13px;letter-spacing:.04em;color:rgba(255,255,255,.72);margin-bottom:12px;line-height:1.7}
-.qopts{display:flex;flex-direction:column;gap:7px}
-.qo{padding:11px 15px;border-radius:10px;cursor:pointer;font-size:12px;letter-spacing:.04em;color:rgba(255,255,255,.45);border:1px solid rgba(139,92,246,.07);background:rgba(139,92,246,.025);transition:all .22s}
-.qo:hover{border-color:rgba(139,92,246,.28);color:rgba(255,255,255,.78);background:rgba(139,92,246,.07)}
-.qo.sel{border-color:rgba(139,92,246,.5);background:rgba(139,92,246,.12);color:var(--t)}
-.sbtn{width:100%;padding:13px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.35);border-radius:12px;color:var(--p);font-size:11px;letter-spacing:.2em;cursor:pointer;margin-top:6px;transition:all .3s;font-family:inherit}
-.sbtn:hover{background:rgba(139,92,246,.2);box-shadow:0 0 20px rgba(139,92,246,.3)}
-.rcw{display:flex;justify-content:center;margin:16px 0}
-.ra{text-align:center;margin-bottom:20px}
-.rt{font-size:26px;font-weight:200;letter-spacing:.15em;margin-bottom:3px}
-.ren{font-size:9px;letter-spacing:.4em;color:var(--p);opacity:.6}
-.rcs{display:flex;flex-direction:column;gap:10px}
-.rc{padding:14px 16px;border-radius:12px}
-.rcl{font-size:8px;letter-spacing:.35em;color:var(--p);text-transform:uppercase;margin-bottom:5px}
-.rcv{font-size:12px;letter-spacing:.04em;color:rgba(255,255,255,.7);line-height:1.7}
-#voice{align-items:center;justify-content:center}
-.vc{display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center;padding:60px 32px 0}
-.vs{font-size:9px;letter-spacing:.4em;color:var(--p);opacity:.6}
-.vbtn{width:60px;height:60px;border-radius:50%;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.28);color:var(--p);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .35s;box-shadow:0 0 20px rgba(139,92,246,.08)}
-.vbtn:hover{transform:scale(1.06);box-shadow:0 0 36px rgba(139,92,246,.3)}
-.vbtn.on{background:rgba(139,92,246,.22);box-shadow:0 0 50px rgba(139,92,246,.5),0 0 90px rgba(139,92,246,.18);animation:pb 2.5s ease-in-out infinite}
-.vh{font-size:11px;letter-spacing:.08em;color:rgba(255,255,255,.22);max-width:220px;line-height:1.9}
-@keyframes pb{0%,100%{box-shadow:0 0 30px rgba(139,92,246,.4)}50%{box-shadow:0 0 60px rgba(139,92,246,.7),0 0 80px rgba(139,92,246,.25)}}
-#chat{display:flex;flex-direction:column;padding:56px 0 72px}
-.ch{padding:0 22px 18px;text-align:center;flex-shrink:0}
+.screen::-webkit-scrollbar{width:1px}
+.screen::-webkit-scrollbar-thumb{background:rgba(201,168,76,.2)}
+#nav{position:fixed;bottom:0;left:0;right:0;height:72px;z-index:100;
+  display:flex;align-items:center;justify-content:space-around;
+  background:rgba(3,2,10,.92);backdrop-filter:blur(24px);
+  border-top:1px solid rgba(201,168,76,.06)}
+.ni{display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;padding:8px 12px;opacity:.28;transition:all .3s}
+.ni.active{opacity:1}.ni:hover{opacity:.6;transform:translateY(-2px)}
+.ni-ic{font-size:16px}.ni-lb{font-size:7px;letter-spacing:.15em;color:var(--td)}
+.ni.active .ni-lb{color:var(--gold)}
+.ni.active .ni-ic{filter:drop-shadow(0 0 6px rgba(201,168,76,.6))}
+.glass{background:var(--pgf);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--border);border-radius:14px}
+.glass-gold{background:var(--goldf);backdrop-filter:blur(20px);
+  border:1px solid var(--border2);border-radius:14px}
+.lbl{font-size:8px;letter-spacing:.6em;color:var(--gold);opacity:.65;text-transform:uppercase;margin-bottom:6px}
+.ttl{font-size:20px;font-weight:200;letter-spacing:.12em}
+.glow-gold{text-shadow:0 0 30px rgba(201,168,76,.5),0 0 60px rgba(201,168,76,.2)}
+
+/* HOME */
+#home{align-items:center;justify-content:center;gap:0}
+.home-inner{display:flex;flex-direction:column;align-items:center;gap:36px;padding:20px 28px 0;width:100%;max-width:420px}
+.logo-wrap{text-align:center}
+.logo-main{font-size:48px;font-weight:100;letter-spacing:.5em;color:#fff;margin-bottom:4px}
+.logo-sub{font-size:8px;letter-spacing:.7em;color:var(--gold);opacity:.5;text-transform:uppercase}
+.home-divider{width:40px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:0 auto}
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%}
+.hc{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;cursor:pointer;border-radius:18px;padding:20px 12px;
+  transition:transform .4s,box-shadow .4s;aspect-ratio:1}
+.hc:nth-child(1){animation:hfl 5s ease-in-out infinite}
+.hc:nth-child(2){animation:hfl 5s ease-in-out infinite 1s}
+.hc:nth-child(3){animation:hfl 5s ease-in-out infinite 2s}
+.hc:nth-child(4){animation:hfl 5s ease-in-out infinite 3s}
+.hc:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(201,168,76,.12)}
+.hc-ic{font-size:24px}
+.hc-name{font-size:10px;letter-spacing:.12em;color:var(--td);text-align:center}
+.hc-num{font-size:8px;letter-spacing:.4em;color:var(--gold);opacity:.4}
+@keyframes hfl{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* WEALTH TEST */
+#wtest{padding:52px 20px 80px}
+.wt-header{text-align:center;margin-bottom:28px}
+.wt-progress{height:1px;background:rgba(201,168,76,.1);border-radius:1px;margin-bottom:28px}
+.wt-bar{height:100%;background:linear-gradient(to right,var(--p2),var(--gold));
+  border-radius:1px;transition:width .4s;box-shadow:0 0 6px rgba(201,168,76,.4)}
+.wq{margin-bottom:8px}
+.wq-num{font-size:8px;letter-spacing:.4em;color:var(--gold);opacity:.5;margin-bottom:8px}
+.wq-text{font-size:14px;letter-spacing:.04em;color:rgba(255,255,255,.8);line-height:1.8;margin-bottom:16px}
+.wq-opts{display:flex;flex-direction:column;gap:8px}
+.wqo{padding:12px 16px;border-radius:10px;cursor:pointer;font-size:12px;
+  letter-spacing:.04em;color:rgba(255,255,255,.45);
+  border:1px solid rgba(124,58,237,.08);background:rgba(124,58,237,.03);transition:all .22s}
+.wqo:hover{border-color:rgba(201,168,76,.3);color:rgba(255,255,255,.75);background:rgba(201,168,76,.04)}
+.wqo.sel{border-color:rgba(201,168,76,.5);background:rgba(201,168,76,.08);color:var(--t)}
+.wt-nav{display:flex;gap:10px;margin-top:20px}
+.wt-btn{flex:1;padding:12px;border-radius:10px;cursor:pointer;font-size:11px;
+  letter-spacing:.2em;font-family:inherit;transition:all .3s}
+.wt-btn.prev{background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.2);color:var(--td)}
+.wt-btn.next{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.35);color:var(--gold)}
+.wt-btn.next:hover{background:rgba(201,168,76,.18);box-shadow:0 0 20px rgba(201,168,76,.2)}
+/* Result */
+#wr{display:none;padding:20px}
+.wr-level{text-align:center;margin-bottom:24px}
+.wr-num{font-size:11px;letter-spacing:.5em;color:var(--gold);margin-bottom:6px}
+.wr-name{font-size:28px;font-weight:200;letter-spacing:.15em;margin-bottom:4px}
+.wr-en{font-size:9px;letter-spacing:.4em;color:var(--gold);opacity:.5}
+.wr-bar-wrap{margin:20px 0;position:relative}
+.wr-bar-bg{height:3px;background:rgba(255,255,255,.06);border-radius:2px}
+.wr-bar-fill{height:100%;border-radius:2px;background:linear-gradient(to right,var(--p2),var(--gold));
+  box-shadow:0 0 10px rgba(201,168,76,.5)}
+.wr-pct{text-align:right;font-size:9px;color:var(--gold);margin-top:4px;letter-spacing:.1em}
+.wr-cards{display:flex;flex-direction:column;gap:10px}
+.wr-card{padding:14px 18px;border-radius:12px}
+.wr-cl{font-size:8px;letter-spacing:.4em;color:var(--gold);text-transform:uppercase;margin-bottom:5px}
+.wr-cv{font-size:12px;letter-spacing:.04em;color:rgba(255,255,255,.7);line-height:1.75}
+.wr-cta{margin-top:20px;padding:14px;width:100%;background:rgba(201,168,76,.12);
+  border:1px solid rgba(201,168,76,.4);border-radius:12px;color:var(--gold);
+  font-size:11px;letter-spacing:.2em;cursor:pointer;font-family:inherit;transition:all .3s}
+.wr-cta:hover{background:rgba(201,168,76,.22);box-shadow:0 0 24px rgba(201,168,76,.25)}
+
+/* VOID HEALING / CHAT */
+#void{display:flex;flex-direction:column;padding:52px 0 72px}
+.void-hd{padding:0 20px 16px;text-align:center;flex-shrink:0}
 .cm{flex:1;overflow-y:auto;padding:0 18px;display:flex;flex-direction:column;gap:12px;scrollbar-width:none}
 .cm::-webkit-scrollbar{display:none}
-.msg{max-width:84%;border-radius:14px;padding:11px 15px;font-size:13px;line-height:1.85;letter-spacing:.03em;white-space:pre-wrap}
-.msg.ai{align-self:flex-start;background:rgba(139,92,246,.055);border:1px solid rgba(139,92,246,.1);color:rgba(255,255,255,.78);border-bottom-left-radius:4px}
-.msg.me{align-self:flex-end;background:rgba(139,92,246,.14);border:1px solid rgba(139,92,246,.22);color:rgba(255,255,255,.88);border-bottom-right-radius:4px}
+.msg{max-width:85%;border-radius:14px;padding:11px 15px;font-size:13px;
+  line-height:1.85;letter-spacing:.03em;white-space:pre-wrap}
+.msg.ai{align-self:flex-start;background:rgba(124,58,237,.055);
+  border:1px solid rgba(124,58,237,.1);color:rgba(255,255,255,.78);border-bottom-left-radius:4px}
+.msg.me{align-self:flex-end;background:rgba(201,168,76,.1);
+  border:1px solid rgba(201,168,76,.2);color:rgba(255,255,255,.88);border-bottom-right-radius:4px}
 .ciw{padding:10px 18px 0;display:flex;gap:9px;align-items:center;flex-shrink:0}
-.ci{flex:1;padding:11px 15px;background:rgba(139,92,246,.04);border:1px solid rgba(139,92,246,.1);border-radius:12px;color:var(--t);font-size:13px;outline:none;font-family:inherit;letter-spacing:.03em}
-.ci::placeholder{color:rgba(255,255,255,.18)}
-.cs{width:38px;height:38px;border-radius:50%;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.28);color:var(--p);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0}
-.cs:hover{background:rgba(139,92,246,.22);box-shadow:0 0 14px rgba(139,92,246,.3)}
-.typing{display:flex;gap:5px;padding:12px 15px;align-self:flex-start;background:rgba(139,92,246,.055);border:1px solid rgba(139,92,246,.1);border-radius:14px;border-bottom-left-radius:4px}
-.typing span{width:5px;height:5px;border-radius:50%;background:rgba(139,92,246,.5);animation:td 1.2s ease-in-out infinite}
+.ci{flex:1;padding:11px 16px;background:rgba(255,255,255,.03);
+  border:1px solid rgba(201,168,76,.1);border-radius:12px;color:var(--t);
+  font-size:13px;outline:none;font-family:inherit;letter-spacing:.03em}
+.ci::placeholder{color:rgba(255,255,255,.15)}
+.cs{width:38px;height:38px;border-radius:50%;background:rgba(201,168,76,.1);
+  border:1px solid rgba(201,168,76,.3);color:var(--gold);font-size:13px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0}
+.cs:hover{background:rgba(201,168,76,.2);box-shadow:0 0 14px rgba(201,168,76,.25)}
+.typing{display:flex;gap:5px;padding:12px 15px;align-self:flex-start;
+  background:rgba(124,58,237,.055);border:1px solid rgba(124,58,237,.1);
+  border-radius:14px;border-bottom-left-radius:4px}
+.typing span{width:4px;height:4px;border-radius:50%;background:rgba(201,168,76,.5);
+  animation:typ 1.2s ease-in-out infinite}
 .typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
-@keyframes td{0%,80%,100%{opacity:.2;transform:scale(1)}40%{opacity:1;transform:scale(1.25)}}
-#as{align-items:center;justify-content:center;overflow:hidden}
-#aurora{position:absolute;inset:0;z-index:0;opacity:0;transition:opacity 2s ease;background:radial-gradient(ellipse at 20% 30%,rgba(88,28,135,.5) 0%,transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(109,40,217,.35) 0%,transparent 50%),radial-gradient(ellipse at 55% 45%,rgba(201,168,76,.06) 0%,transparent 55%);animation:as 9s ease-in-out infinite}
+@keyframes typ{0%,80%,100%{opacity:.2;transform:scale(1)}40%{opacity:1;transform:scale(1.3)}}
+
+/* ABOUT MIA */
+#about{padding:52px 20px 80px;overflow-y:auto}
+.ab-hero{text-align:center;margin-bottom:28px}
+.ab-name{font-size:32px;font-weight:200;letter-spacing:.3em;margin-bottom:4px}
+.ab-title{font-size:9px;letter-spacing:.5em;color:var(--gold);opacity:.6}
+.ab-quote{text-align:center;padding:20px 24px;margin-bottom:24px;border-radius:14px;
+  font-size:13px;line-height:1.9;color:rgba(255,255,255,.65);letter-spacing:.05em;
+  font-style:italic;border-top:1px solid rgba(201,168,76,.15);border-bottom:1px solid rgba(201,168,76,.15)}
+.ab-creds{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:28px}
+.ab-cred{padding:10px 14px;border-radius:10px;font-size:10px;
+  letter-spacing:.05em;color:rgba(255,255,255,.55);text-align:center}
+.prod-section{margin-bottom:8px}
+.prod-title{font-size:9px;letter-spacing:.5em;color:var(--gold);opacity:.5;
+  text-transform:uppercase;margin-bottom:12px;padding-left:4px}
+.prod-item{margin-bottom:8px;border-radius:12px;overflow:hidden;cursor:pointer}
+.prod-header{display:flex;justify-content:space-between;align-items:center;
+  padding:14px 16px;transition:all .2s}
+.prod-header:hover{background:rgba(201,168,76,.04)}
+.prod-name{font-size:12px;letter-spacing:.05em;color:rgba(255,255,255,.75)}
+.prod-price{font-size:11px;color:var(--gold);letter-spacing:.05em}
+.prod-body{display:none;padding:0 16px 14px;font-size:11px;
+  color:rgba(255,255,255,.45);line-height:1.9;letter-spacing:.03em}
+.prod-body.open{display:block}
+.prod-arrow{font-size:9px;color:var(--gold);opacity:.4;transition:transform .2s}
+.prod-arrow.open{transform:rotate(90deg)}
+
+/* AUDIO */
+#ascreen{align-items:center;justify-content:center;overflow:hidden}
+#aurora{position:absolute;inset:0;z-index:0;opacity:0;transition:opacity 2s;
+  background:radial-gradient(ellipse at 20% 30%,rgba(88,28,135,.5) 0%,transparent 50%),
+             radial-gradient(ellipse at 80% 70%,rgba(109,40,217,.35) 0%,transparent 50%),
+             radial-gradient(ellipse at 55% 45%,rgba(201,168,76,.08) 0%,transparent 55%);
+  animation:au 9s ease-in-out infinite}
 #aurora.on{opacity:1}
-@keyframes as{0%,100%{background:radial-gradient(ellipse at 20% 30%,rgba(88,28,135,.5) 0%,transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(109,40,217,.35) 0%,transparent 50%),radial-gradient(ellipse at 55% 45%,rgba(201,168,76,.06) 0%,transparent 55%)}33%{background:radial-gradient(ellipse at 65% 20%,rgba(109,40,217,.42) 0%,transparent 50%),radial-gradient(ellipse at 25% 80%,rgba(88,28,135,.32) 0%,transparent 50%),radial-gradient(ellipse at 70% 55%,rgba(201,168,76,.07) 0%,transparent 50%)}66%{background:radial-gradient(ellipse at 75% 65%,rgba(124,58,237,.45) 0%,transparent 50%),radial-gradient(ellipse at 18% 35%,rgba(76,29,149,.3) 0%,transparent 50%),radial-gradient(ellipse at 45% 28%,rgba(201,168,76,.05) 0%,transparent 52%)}}
-.pw{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:24px;width:100%;padding:0 28px}
-.tl{width:100%;display:flex;flex-direction:column;gap:9px}
-.ti{padding:13px 16px;border-radius:12px;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:13px}
-.ti.sel{border-color:rgba(139,92,246,.4)!important;background:rgba(139,92,246,.1)!important}
-.td2{width:5px;height:5px;border-radius:50%;background:rgba(139,92,246,.3);flex-shrink:0;transition:all .3s}
-.ti.sel .td2{background:var(--p);box-shadow:0 0 8px rgba(139,92,246,.9)}
+@keyframes au{
+  0%,100%{background:radial-gradient(ellipse at 20% 30%,rgba(88,28,135,.5) 0%,transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(109,40,217,.35) 0%,transparent 50%),radial-gradient(ellipse at 55% 45%,rgba(201,168,76,.08) 0%,transparent 55%)}
+  50%{background:radial-gradient(ellipse at 70% 20%,rgba(109,40,217,.45) 0%,transparent 50%),radial-gradient(ellipse at 25% 75%,rgba(88,28,135,.3) 0%,transparent 50%),radial-gradient(ellipse at 60% 55%,rgba(201,168,76,.06) 0%,transparent 52%)}
+}
+.aw{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:22px;width:100%;padding:0 28px}
+.tl{width:100%;display:flex;flex-direction:column;gap:8px}
+.ti{padding:12px 16px;border-radius:12px;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:12px}
+.ti.sel{border-color:rgba(201,168,76,.4)!important;background:rgba(201,168,76,.07)!important}
+.tdot{width:5px;height:5px;border-radius:50%;background:rgba(201,168,76,.25);flex-shrink:0;transition:all .3s}
+.ti.sel .tdot{background:var(--gold);box-shadow:0 0 8px rgba(201,168,76,.8)}
 .tinfo{flex:1}
-.tn{font-size:12px;letter-spacing:.07em;color:rgba(255,255,255,.65)}
-.thz{font-size:9px;letter-spacing:.2em;color:var(--p);opacity:.55;margin-top:2px}
-.pc2{display:flex;flex-direction:column;align-items:center;gap:18px;width:100%}
-.pb2{width:100%;height:1px;background:rgba(139,92,246,.14);border-radius:1px;cursor:pointer;position:relative}
-.pf{height:100%;background:linear-gradient(90deg,var(--p2),var(--p));border-radius:1px;width:0%;box-shadow:0 0 6px rgba(139,92,246,.7);transition:width .5s linear;position:relative}
-.pf::after{content:'';position:absolute;right:-3px;top:-3px;width:7px;height:7px;border-radius:50%;background:var(--p);box-shadow:0 0 10px rgba(139,92,246,1)}
-.tr{display:flex;justify-content:space-between;width:100%;font-size:9px;letter-spacing:.15em;color:rgba(255,255,255,.22);margin-top:7px}
-.playbtn{width:68px;height:68px;border-radius:50%;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.28);color:var(--p);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .4s}
-.playbtn.on{background:rgba(139,92,246,.2);box-shadow:0 0 40px rgba(139,92,246,.45),0 0 80px rgba(139,92,246,.15);animation:pb 3s ease-in-out infinite}
+.tn{font-size:12px;letter-spacing:.06em;color:rgba(255,255,255,.6)}
+.thz{font-size:8px;letter-spacing:.2em;color:var(--gold);opacity:.5;margin-top:2px}
+.apc{display:flex;flex-direction:column;align-items:center;gap:16px;width:100%}
+.apb{width:100%;height:1px;background:rgba(201,168,76,.1);position:relative}
+.apf{height:100%;background:linear-gradient(to right,var(--p2),var(--gold));width:0%;
+  box-shadow:0 0 6px rgba(201,168,76,.6);transition:width .5s;position:relative}
+.apf::after{content:'';position:absolute;right:-3px;top:-3px;width:7px;height:7px;
+  border-radius:50%;background:var(--gold);box-shadow:0 0 10px rgba(201,168,76,1)}
+.atr{display:flex;justify-content:space-between;width:100%;
+  font-size:8px;letter-spacing:.15em;color:rgba(255,255,255,.2);margin-top:6px}
+.apbtn{width:64px;height:64px;border-radius:50%;background:rgba(201,168,76,.08);
+  border:1px solid rgba(201,168,76,.25);color:var(--gold);font-size:18px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .4s}
+.apbtn.on{background:rgba(201,168,76,.18);box-shadow:0 0 40px rgba(201,168,76,.4),0 0 80px rgba(201,168,76,.12);
+  animation:gpls 3s ease-in-out infinite}
+@keyframes gpls{0%,100%{box-shadow:0 0 30px rgba(201,168,76,.35)}50%{box-shadow:0 0 60px rgba(201,168,76,.6),0 0 80px rgba(201,168,76,.2)}}
 </style>
 </head>
 <body>
-<div id="cosmos"></div>
 <canvas id="sc"></canvas>
+<div id="nebula"></div>
 <div id="app">
-  <div class="screen active" id="home">
-    <div class="hd"><div class="ht glow">8D 显化</div><div class="hs">Cosmic Void Project · 宇宙虚空计划</div></div>
-    <div class="grid">
-      <div class="pc glass" onclick="go('test')"><div class="pi">⬡</div><div class="pn">能量场测试</div><div class="pnum">01</div></div>
-      <div class="pc glass" onclick="go('voice')"><div class="pi">◎</div><div class="pn">高维链接</div><div class="pnum">02</div></div>
-      <div class="pc glass" onclick="go('chat')"><div class="pi">✦</div><div class="pn">潜意识挖掘</div><div class="pnum">03</div></div>
-      <div class="pc glass" onclick="go('as')"><div class="pi">∞</div><div class="pn">8D 显化站</div><div class="pnum">04</div></div>
+
+<!-- HOME -->
+<div class="screen active" id="home">
+  <div class="home-inner">
+    <div class="logo-wrap">
+      <div class="logo-main glow-gold">GAMMA·X</div>
+      <div class="logo-sub">Consciousness Matrix · 意识觉醒矩阵</div>
     </div>
-  </div>
-  <div class="screen" id="test">
-    <div class="sh"><div class="lbl">5D Geometry Test</div><div class="ttl">能量原型测试</div></div>
-    <div id="tq" style="padding:0 22px"></div>
-    <div id="rv" style="padding:0 22px;display:none">
-      <div class="rcw"><canvas id="gc" width="190" height="190"></canvas></div>
-      <div class="ra"><div class="rt" id="rtype">—</div><div class="ren" id="ren">—</div></div>
-      <div class="rcs" id="rcards"></div>
-      <button class="sbtn glass" style="margin-top:22px" onclick="resetT()">重新测试 →</button>
-    </div>
-  </div>
-  <div class="screen" id="voice">
-    <div class="vc">
-      <div class="sh"><div class="lbl">Higher Self Connection</div><div class="ttl">高维链接</div></div>
-      <div class="vs" id="vstatus">等待链接</div>
-      <canvas id="wc" width="210" height="210"></canvas>
-      <button class="vbtn" id="vbtn" onclick="toggleV()">◎</button>
-      <p class="vh">点击启动跨维度语音通话<br>与更高自我建立实时连接</p>
-    </div>
-  </div>
-  <div class="screen" id="chat">
-    <div class="ch"><div class="lbl">Subconscious Excavation</div><div class="ttl" style="font-size:20px">潜意识挖掘</div></div>
-    <div class="cm" id="msgs"></div>
-    <div class="ciw">
-      <input class="ci" id="cin" placeholder="输入你的意识困境…" onkeydown="if(event.key==='Enter')send()">
-      <button class="cs" onclick="send()">↑</button>
-    </div>
-  </div>
-  <div class="screen" id="as">
-    <div id="aurora"></div>
-    <div class="pw">
-      <div class="sh" style="text-align:center"><div class="lbl">Manifestation Station</div><div class="ttl">8D 显化频率</div></div>
-      <div class="tl" id="tlist"></div>
-      <div class="pc2">
-        <div style="width:100%">
-          <div class="pb2"><div class="pf" id="pf"></div></div>
-          <div class="tr"><span id="tc">0:00</span><span id="tt">10:00</span></div>
-        </div>
-        <button class="playbtn glass" id="pbtn" onclick="toggleP()">▶</button>
+    <div class="home-divider"></div>
+    <div class="home-grid">
+      <div class="hc glass-gold" onclick="go('wtest')">
+        <div class="hc-ic" style="filter:drop-shadow(0 0 8px rgba(201,168,76,.6))">◈</div>
+        <div class="hc-name">财富意识测评</div>
+        <div class="hc-num">01</div>
+      </div>
+      <div class="hc glass" onclick="go('void')">
+        <div class="hc-ic" style="filter:drop-shadow(0 0 8px rgba(124,58,237,.7))">✦</div>
+        <div class="hc-name">空无疗愈</div>
+        <div class="hc-num">02</div>
+      </div>
+      <div class="hc glass" onclick="go('about')">
+        <div class="hc-ic" style="filter:drop-shadow(0 0 8px rgba(124,58,237,.7))">⬡</div>
+        <div class="hc-name">关于 Mia</div>
+        <div class="hc-num">03</div>
+      </div>
+      <div class="hc glass" onclick="go('ascreen')">
+        <div class="hc-ic" style="filter:drop-shadow(0 0 8px rgba(124,58,237,.7))">∞</div>
+        <div class="hc-name">8D 显化站</div>
+        <div class="hc-num">04</div>
       </div>
     </div>
   </div>
 </div>
-<div id="nav">
-  <div class="ni active" data-s="home" onclick="go('home')"><span class="ni-ic">⬡</span><span class="ni-lb">宇宙门户</span></div>
-  <div class="ni" data-s="test" onclick="go('test')"><span class="ni-ic">◈</span><span class="ni-lb">能量测试</span></div>
-  <div class="ni" data-s="voice" onclick="go('voice')"><span class="ni-ic">◎</span><span class="ni-lb">高维链接</span></div>
-  <div class="ni" data-s="chat" onclick="go('chat')"><span class="ni-ic">✦</span><span class="ni-lb">潜意识</span></div>
-  <div class="ni" data-s="as" onclick="go('as')"><span class="ni-ic">∞</span><span class="ni-lb">8D 显化</span></div>
+
+<!-- WEALTH TEST -->
+<div class="screen" id="wtest">
+  <div class="wt-header">
+    <div class="lbl">Wealth Consciousness Assessment</div>
+    <div class="ttl">财富意识等级测评</div>
+  </div>
+  <div style="padding:0 20px">
+    <div class="wt-progress"><div class="wt-bar" id="wtbar" style="width:10%"></div></div>
+    <div id="wqblock"></div>
+    <div class="wt-nav">
+      <button class="wt-btn prev" onclick="wtPrev()">← 上一题</button>
+      <button class="wt-btn next" id="wtnext" onclick="wtNext()">下一题 →</button>
+    </div>
+  </div>
+  <div id="wr" style="padding:0 20px">
+    <div class="wr-level">
+      <div class="wr-num" id="wr-lnum">— LEVEL —</div>
+      <div class="wr-name" id="wr-name">—</div>
+      <div class="wr-en" id="wr-en">—</div>
+    </div>
+    <div class="wr-bar-wrap glass" style="padding:16px 18px">
+      <div style="font-size:9px;letter-spacing:.3em;color:var(--gold);margin-bottom:10px">财富意识频率</div>
+      <div class="wr-bar-bg"><div class="wr-bar-fill" id="wr-fill" style="width:0%"></div></div>
+      <div class="wr-pct" id="wr-pct">0%</div>
+    </div>
+    <div class="wr-cards" id="wr-cards" style="margin-top:16px"></div>
+    <button class="wr-cta" onclick="go('void')">进入空无疗愈 · 开始重写底层代码 →</button>
+    <button class="wr-cta" style="margin-top:10px;background:rgba(124,58,237,.08);border-color:rgba(124,58,237,.3);color:rgba(255,255,255,.5)" onclick="wtReset()">重新测评</button>
+  </div>
 </div>
+
+<!-- VOID HEALING -->
+<div class="screen" id="void">
+  <div class="void-hd">
+    <div class="lbl">Void Healing · 空无疗愈</div>
+    <div class="ttl" style="font-size:18px">潜意识深度对话</div>
+    <div style="font-size:10px;letter-spacing:.08em;color:rgba(255,255,255,.25);margin-top:6px">在意识的底层空间，真实的答案一直在等你</div>
+  </div>
+  <div class="cm" id="msgs"></div>
+  <div class="ciw">
+    <input class="ci" id="cin" placeholder="说出你最深处的困境…" onkeydown="if(event.key==='Enter')send()">
+    <button class="cs" onclick="send()">↑</button>
+  </div>
+</div>
+
+<!-- ABOUT MIA -->
+<div class="screen" id="about">
+  <div class="ab-hero">
+    <div class="lbl">Consciousness Engineer</div>
+    <div class="ab-name glow-gold">Mia</div>
+    <div class="ab-title">潜意识神经工程师 · 显化导师 · 萨满疗愈师</div>
+  </div>
+  <div class="ab-quote glass" style="font-size:14px;letter-spacing:.08em">
+    你不是不够努力。<br>是有一段你看不见的程序，<span style="color:var(--gold)">一直在帮你踩刹车。</span>
+  </div>
+  <div class="ab-creds">
+    <div class="ab-cred glass">UOC 文学硕士</div>
+    <div class="ab-cred glass">中科院认证心理咨询师</div>
+    <div class="ab-cred glass">CTA 塔罗协会会员</div>
+    <div class="ab-cred glass">疗愈品牌创始人</div>
+    <div class="ab-cred glass">10年玄学实战经验</div>
+    <div class="ab-cred glass">显化导师 · 萨满疗愈师</div>
+  </div>
+  <div class="prod-section">
+    <div class="prod-title">服务体系 · Service Matrix</div>
+    <div id="prodlist"></div>
+  </div>
+</div>
+
+<!-- AUDIO -->
+<div class="screen" id="ascreen">
+  <div id="aurora"></div>
+  <div class="aw">
+    <div style="text-align:center"><div class="lbl">8D Manifestation Station</div><div class="ttl">显化频率</div></div>
+    <div class="tl" id="tlist"></div>
+    <div class="apc">
+      <div style="width:100%">
+        <div class="apb"><div class="apf" id="pf"></div></div>
+        <div class="atr"><span id="tc">0:00</span><span id="tt">10:00</span></div>
+      </div>
+      <button class="apbtn glass" id="pbtn" onclick="toggleP()">▶</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- app -->
+
+<div id="nav">
+  <div class="ni active" data-s="home" onclick="go('home')"><span class="ni-ic">◎</span><span class="ni-lb">宇宙门户</span></div>
+  <div class="ni" data-s="wtest" onclick="go('wtest')"><span class="ni-ic">◈</span><span class="ni-lb">财富测评</span></div>
+  <div class="ni" data-s="void" onclick="go('void')"><span class="ni-ic">✦</span><span class="ni-lb">空无疗愈</span></div>
+  <div class="ni" data-s="about" onclick="go('about')"><span class="ni-ic">⬡</span><span class="ni-lb">关于Mia</span></div>
+  <div class="ni" data-s="ascreen" onclick="go('ascreen')"><span class="ni-ic">∞</span><span class="ni-lb">8D显化</span></div>
+</div>
+
 <script>
+/* STARS */
 const sc=document.getElementById('sc'),sx=sc.getContext('2d');
 let stars=[];
-function rsz(){sc.width=innerWidth;sc.height=innerHeight;stars=Array.from({length:130},()=>({x:Math.random()*sc.width,y:Math.random()*sc.height,r:.2+Math.random()*1.1,a:Math.random(),sp:.003+Math.random()*.005,ph:Math.random()*Math.PI*2}))}
-function drawStars(t){sx.clearRect(0,0,sc.width,sc.height);stars.forEach(s=>{const a=s.a*(.35+.65*Math.abs(Math.sin(t*s.sp+s.ph)));sx.beginPath();sx.arc(s.x,s.y,s.r,0,Math.PI*2);sx.fillStyle=`rgba(210,190,255,${a})`;sx.fill()});requestAnimationFrame(drawStars)}
-window.addEventListener('resize',rsz);rsz();drawStars(0);
+function rsz(){
+  sc.width=innerWidth;sc.height=innerHeight;
+  stars=Array.from({length:180},()=>({
+    x:Math.random()*sc.width,y:Math.random()*sc.height,
+    r:.1+Math.random()*.9,a:Math.random(),
+    sp:.002+Math.random()*.004,ph:Math.random()*Math.PI*2,
+    gold:Math.random()<.05
+  }));
+}
+function drawS(t){
+  sx.clearRect(0,0,sc.width,sc.height);
+  stars.forEach(s=>{
+    const a=s.a*(.3+.7*Math.abs(Math.sin(t*s.sp+s.ph)));
+    sx.beginPath();sx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    sx.fillStyle=s.gold?`rgba(201,168,76,${a*0.7})`:`rgba(210,190,255,${a})`;
+    sx.fill();
+  });
+  requestAnimationFrame(drawS);
+}
+window.addEventListener('resize',rsz);rsz();drawS(0);
 
+/* NAV */
 function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.ni').forEach(n=>n.classList.toggle('active',n.dataset.s===id));
-  if(id==='chat'&&!chatInit)initChat();
-  if(id==='test'&&!testInit)initTest();
-  if(id==='as'&&!audioInit)initAudio();
-  if(id==='voice')startWave();
+  if(id==='void'&&!chatInit)initChat();
+  if(id==='wtest'&&!wtInit)initWT();
+  if(id==='ascreen'&&!audioInit)initAudio();
+  if(id==='about'&&!aboutInit)initAbout();
 }
 
-let testInit=false,ans={};
-const Qs=[
-  {id:'q1',t:'独处时，你最自然进入哪种状态？',opts:[{t:'燃烧的灵感与创造欲',v:'fire'},{t:'深邃的情感流动',v:'water'},{t:'踏实专注与执行力',v:'earth'},{t:'宏观思考与洞察',v:'air'},{t:'空灵的虚无与清明',v:'void'}]},
-  {id:'q2',t:'面对生命的重大障碍，你的本能是？',opts:[{t:'燃起斗志，正面突破',v:'fire'},{t:'感受它，让情感带你穿越',v:'water'},{t:'拆解步骤，稳步前行',v:'earth'},{t:'跳出局限，找到新视角',v:'air'},{t:'归于寂静，等待答案浮现',v:'void'}]},
-  {id:'q3',t:'你灵魂最深处渴望的是？',opts:[{t:'力量与影响力的彰显',v:'fire'},{t:'深度连接与被完全接纳',v:'water'},{t:'稳固的安全感与丰盛',v:'earth'},{t:'自由与无限的可能性',v:'air'},{t:'与万物合一的大融合',v:'void'}]},
-  {id:'q4',t:'你最常面临的内在挑战？',opts:[{t:'过于激烈，容易灼伤自己',v:'fire'},{t:'情绪起伏，容易被淹没',v:'water'},{t:'固执停滞，难以接受变化',v:'earth'},{t:'散漫失焦，想法难以落地',v:'air'},{t:'与现实脱节，难以被看见',v:'void'}]},
-  {id:'q5',t:'你的显化风格最接近哪种？',opts:[{t:'强烈意图 + 大胆行动',v:'fire'},{t:'深度感受 + 情感引导',v:'water'},{t:'清晰计划 + 持续积累',v:'earth'},{t:'高维视野 + 灵感驱动',v:'air'},{t:'臣服放下 + 允许发生',v:'void'}]}
+/* WEALTH TEST */
+let wtInit=false,wtCur=0,wtAns={};
+const WQ=[
+  {t:'当你账户余额低于预期，你第一个念头是？',opts:['完了，可能要出问题了','我得更拼命工作才行','我需要调整策略和方向','这只是暂时的现金流波动','宇宙在引导我重新排列资源']},
+  {t:'谈到金钱，你内心深处真实的感受是？',opts:['恐惧紧张，感觉永远不够','无奈，努力了但好像有天花板','还可以，但总有"差一口气"的感觉','基本满足，偶尔渴望更大突破','钱是流动的能量，我知道它总会来']},
+  {t:'看到别人比你更成功时，你的反应是？',opts:['嫉妒，甚至有些愤怒','沮丧，觉得自己不够好','激励自己要更加努力','真心为他们高兴，看见自己的方向','感到这是宇宙给我看见的下一个版本']},
+  {t:'你赚到一笔大钱后，通常会发生什么？',opts:['很快花掉或出现意外损耗','存起来但总感到不安全','一部分投资，但还是有漏洞','基本能保住并持续增长','钱会自动吸引更多钱流入']},
+  {t:'当你需要提高收费时，你的内在感受是？',opts:['极度焦虑，害怕客户流失','犹豫，觉得自己可能不值','理智上应该涨，情感上有阻力','相信自己价值，需要一点准备','我的价值不由市场定义，定价是我意图的表达']},
+  {t:'你对"轻松赚到大钱"这件事的感受是？',opts:['罪恶感，钱应该用汗水换来','羡慕但觉得那不属于我','有点将信将疑','越来越相信这是可能的','我知道钱本来就该流向我，轻松是正常状态']},
+  {t:'你的财富"天花板"感觉来自哪里？',opts:['家族的穷困记忆和限制','社会对财富的负面评价','自身能力和资源的不足','某些固定的思维和习惯模式','我正在系统清理这些内在程序']},
+  {t:'面对一个需要大额投资的机会，你会？',opts:['立刻退缩，害怕损失','犹豫很久，最终可能放弃','反复权衡，拖延决策','经过评估，该投就投','直觉清晰，知道该不该做，不纠结']},
+  {t:'你梦想的财务状态是？',opts:['稳定工作，月底不透支','小康生活，偶尔旅行','年收入几十万，有自己的事业','财务自由，钱在工作，我在生活','无限丰盛，金钱是我创造影响力的工具']},
+  {t:'你觉得自己目前的财富状态，根本原因是？',opts:['运气不好，时机不对','没有好的资源和人脉','努力不够，方法不对','某些潜意识层的限制性信念','我正在觉醒，财富格局即将重构']},
 ];
-const AR={
-  fire:{cn:'烈火显化者',en:'Fire Manifestor',light:'天生开拓者，创造力与意志力是你的超能力',shadow:'容易因急于求成而燃尽自己，需要学习等待的艺术',dir:'将你的烈火转为圣火——有节律地燃烧，而非暴燃',law:'行动法则：你的显化通过大胆的第一步被激活',col:['#FF7043','#E64A19']},
-  water:{cn:'流水感知者',en:'Water Perceiver',light:'极深的共情直觉，你能感知他人无法触碰的频率',shadow:'情绪的深海有时会将你淹没，边界感需要被建立',dir:'让情感成为罗盘而非牢笼，在感受中保持核心稳定',law:'感受法则：进入你渴望现实的感受，显化便自然流来',col:['#4FC3F7','#0288D1']},
-  earth:{cn:'大地守护者',en:'Earth Guardian',light:'稳固的落地力，你能将最宏大的愿景变为可操作的现实',shadow:'对安全感的执着有时会阻挡更大的跃迁机会',dir:'信任你的根基，然后允许自己生长进入未知的高度',law:'积累法则：每一个细小而一致的行动，都是向宇宙下达的订单',col:['#81C784','#388E3C']},
-  air:{cn:'风之思想者',en:'Air Thinker',light:'超越时代的远见卓识，你的思想是人类意识的前锋',shadow:'思想过于超前，难以与当下现实频率对接',dir:'将你的远见下载到身体，让它在呼吸与感受中生根落地',law:'意识法则：你的显化始于一个清晰而震撼的内在意象',col:['#CE93D8','#7B1FA2']},
-  void:{cn:'虚空创造者',en:'Void Creator',light:'你是最高维度的通道，万物皆从你内在的空中生发',shadow:'深度的空可能让他人无法触及你，孤独是你最深的功课',dir:'允许自己被看见，你的存在本身就是一个奇迹场',law:'臣服法则：放下对显化的执着，让宇宙用超乎想象的方式成全你',col:['#9575CD','#4527A0']}
-};
 
-function initTest(){
-  testInit=true;
-  const c=document.getElementById('tq');
-  c.innerHTML=Qs.map(q=>`<div class="qb"><div class="qt">${q.t}</div><div class="qopts">${q.opts.map(o=>`<div class="qo" onclick="selO('${q.id}','${o.v}',this)">${o.t}</div>`).join('')}</div></div>`).join('')+`<button class="sbtn glass" onclick="subT()">解析我的5D原型 →</button>`;
-}
-function selO(qid,val,el){ans[qid]=val;el.closest('.qopts').querySelectorAll('.qo').forEach(o=>o.classList.remove('sel'));el.classList.add('sel')}
-function subT(){
-  const cnt={};Object.values(ans).forEach(v=>cnt[v]=(cnt[v]||0)+1);
-  const dom=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0];
-  if(!dom){return alert('请完成所有5个问题');}
-  const a=AR[dom[0]];
-  document.getElementById('tq').style.display='none';
-  const rv=document.getElementById('rv');rv.style.display='block';
-  document.getElementById('rtype').textContent=a.cn;
-  document.getElementById('ren').textContent=a.en;
-  document.getElementById('rcards').innerHTML=[
-    {l:'LIGHT POINT · 发光点',v:a.light},{l:'SHADOW · 核心卡点',v:a.shadow},
-    {l:'EVOLUTION · 进化方向',v:a.dir},{l:'COSMIC LAW · 专属显化法则',v:a.law}
-  ].map(c=>`<div class="rc glass"><div class="rcl">${c.l}</div><div class="rcv">${c.v}</div></div>`).join('');
-  drawGeo(dom[0]);
-}
-function resetT(){ans={};document.getElementById('tq').style.display='block';document.querySelectorAll('.qo').forEach(o=>o.classList.remove('sel'));document.getElementById('rv').style.display='none'}
-function drawGeo(type){
-  const cv=document.getElementById('gc'),ctx=cv.getContext('2d');
-  const[c1]=AR[type].col;const cx=95,cy=95;let t=0;
-  function frame(){
-    ctx.clearRect(0,0,190,190);
-    const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,90);
-    grd.addColorStop(0,c1+'18');grd.addColorStop(1,'transparent');
-    ctx.fillStyle=grd;ctx.beginPath();ctx.arc(cx,cy,90,0,Math.PI*2);ctx.fill();
-    for(let r=0;r<7;r++){
-      const rad=15+r*11,a=.08+r*.025,off=t*(.007*(r%2===0?1:-1))+r*Math.PI/7;
-      ctx.beginPath();
-      for(let i=0;i<=6;i++){const ang=(i/6)*Math.PI*2+off;ctx.lineTo(cx+rad*Math.cos(ang),cy+rad*Math.sin(ang));}
-      ctx.closePath();ctx.strokeStyle=c1+Math.round(a*255).toString(16).padStart(2,'0');
-      ctx.lineWidth=.6;ctx.shadowColor=c1;ctx.shadowBlur=5;ctx.stroke();ctx.shadowBlur=0;
-    }
-    for(let i=0;i<6;i++){const ang=(i/6)*Math.PI*2+t*.004;ctx.beginPath();ctx.arc(cx+28*Math.cos(ang),cy+28*Math.sin(ang),22,0,Math.PI*2);ctx.strokeStyle=c1+'22';ctx.lineWidth=.4;ctx.stroke()}
-    ctx.beginPath();ctx.arc(cx,cy,4,0,Math.PI*2);ctx.fillStyle=c1;ctx.shadowColor=c1;ctx.shadowBlur=14;ctx.fill();ctx.shadowBlur=0;
-    t++;requestAnimationFrame(frame);
-  }
-  frame();
-}
+const WL=[
+  {n:'匮乏模式',en:'SCARCITY MODE',desc:'你的财富意识系统正处于深度匮乏运行状态。金钱对你而言是恐惧和危险的信号源。底层程序：「我永远不够，我不配拥有更多。」',key:'L1',pct:8},
+  {n:'生存模式',en:'SURVIVAL MODE',desc:'你在为基本的安全感而战。每一笔钱的得失都牵动着你的神经系统。底层程序：「只要能活下去就好，不敢奢望更多。」',key:'L2',pct:18},
+  {n:'挣扎模式',en:'STRUGGLE MODE',desc:'你在努力，但总感觉在逆水行舟。赚了又漏，看不见漏洞在哪里。底层程序：「钱来了会走，我留不住它。」',key:'L3',pct:28},
+  {n:'补偿模式',en:'COMPENSATION MODE',desc:'你用过度努力来弥补内在的不安全感。拼命工作，却始终有一种"还不够"的感觉。底层程序：「我必须证明自己值得。」',key:'L4',pct:38},
+  {n:'交换模式',en:'EXCHANGE MODE',desc:'你相信一分耕耘一分收获，但这也限制了你的财富上限。底层程序：「我必须用时间和劳力换取金钱。」',key:'L5',pct:48},
+  {n:'流动模式',en:'FLOW MODE',desc:'金钱开始流动，但还不够稳定。你感受到了丰盛的可能，但还有些许信念在阻碍。正在突破的程序：「我可以拥有更多，但还没准备好。」',key:'L6',pct:58},
+  {n:'丰盛模式',en:'ABUNDANCE MODE',desc:'你的财富意识已经觉醒到一个相当高的层级。你相信丰盛，并且开始体验到它。下一步：清理那些阻止你进入更高维度的残余程序。',key:'L7',pct:68},
+  {n:'创造模式',en:'CREATION MODE',desc:'你开始从内在创造外在现实。金钱跟随你的意图流动。你已经进入了量子显化的运行轨道。',key:'L8',pct:78},
+  {n:'主权模式',en:'SOVEREIGNTY MODE',desc:'你深知自己是财富的主权者。无论外部环境如何，你的内在稳定性令钱自然涌入。极少数人能到达这个层级。',key:'L9',pct:90},
+  {n:'造物主模式',en:'CREATOR MODE',desc:'你已活在丰盛的最高维度。财富是你存在本身的自然延伸。你不需要显化，你就是显化本身。',key:'L10',pct:100},
+];
 
-let vOn=false,wStarted=false;
-function toggleV(){
-  vOn=!vOn;
-  const b=document.getElementById('vbtn'),s=document.getElementById('vstatus');
-  b.classList.toggle('on',vOn);
-  s.textContent=vOn?'正在链接高维频率…':'等待链接';
-  if(vOn)setTimeout(()=>{if(vOn)s.textContent='链接已建立 · 高维通话中'},1800);
+function initWT(){
+  wtInit=true;renderWQ();
 }
-function startWave(){
-  if(wStarted)return;wStarted=true;
-  const cv=document.getElementById('wc'),ctx=cv.getContext('2d');
-  const w=210,h=210,cx=w/2,cy=h/2;let t=0;
-  function frame(){
-    ctx.clearRect(0,0,w,h);
-    const rings=vOn?5:2;
-    for(let i=0;i<rings;i++){const p=((t*.007+i/rings)%1),r=18+p*80,a=(1-p)*(vOn?.3:.12);ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.strokeStyle=`rgba(139,92,246,${a})`;ctx.lineWidth=.8;ctx.stroke()}
-    ctx.beginPath();
-    const amp=vOn?20:4,fr=.04;
-    for(let x=28;x<w-28;x++){const y=cy+amp*Math.sin(x*fr+t*.07)*Math.sin(x*.014+t*.022);x===28?ctx.moveTo(x,y):ctx.lineTo(x,y)}
-    ctx.strokeStyle=vOn?'rgba(139,92,246,.65)':'rgba(139,92,246,.18)';ctx.lineWidth=1;ctx.shadowColor='rgba(139,92,246,.5)';ctx.shadowBlur=vOn?7:2;ctx.stroke();ctx.shadowBlur=0;
-    ctx.beginPath();ctx.arc(cx,cy,vOn?5:2.5,0,Math.PI*2);ctx.fillStyle=`rgba(139,92,246,${vOn?.85:.3})`;ctx.shadowColor='rgba(139,92,246,.9)';ctx.shadowBlur=vOn?14:5;ctx.fill();ctx.shadowBlur=0;
-    t++;requestAnimationFrame(frame);
-  }
-  frame();
+function renderWQ(){
+  const q=WQ[wtCur];
+  const pct=((wtCur+1)/WQ.length*100).toFixed(0);
+  document.getElementById('wtbar').style.width=pct+'%';
+  document.getElementById('wqblock').innerHTML=`
+    <div class="wq">
+      <div class="wq-num">Q${wtCur+1} / ${WQ.length}</div>
+      <div class="wq-text">${q.t}</div>
+      <div class="wq-opts">${q.opts.map((o,i)=>`<div class="wqo${wtAns[wtCur]===i?' sel':''}" onclick="wtSel(${i},this)">${o}</div>`).join('')}</div>
+    </div>`;
+  document.getElementById('wtnext').innerHTML=wtCur===WQ.length-1?'查看我的意识等级 →':'下一题 →';
+}
+function wtSel(i,el){
+  wtAns[wtCur]=i;
+  el.closest('.wq-opts').querySelectorAll('.wqo').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+function wtPrev(){if(wtCur>0){wtCur--;renderWQ();}}
+function wtNext(){
+  if(wtAns[wtCur]===undefined)return;
+  if(wtCur<WQ.length-1){wtCur++;renderWQ();}
+  else{showWR();}
+}
+function showWR(){
+  let total=0;
+  Object.values(wtAns).forEach(v=>{total+=v+1;});
+  const avg=total/WQ.length;
+  const lvl=Math.min(9,Math.floor((avg-1)/0.4));
+  const L=WL[lvl];
+  document.getElementById('wqblock').style.display='none';
+  document.querySelector('.wt-nav').style.display='none';
+  document.querySelector('.wt-progress').style.display='none';
+  const rv=document.getElementById('wr');rv.style.display='block';
+  document.getElementById('wr-lnum').textContent=`— LEVEL ${lvl+1} —`;
+  document.getElementById('wr-name').textContent=L.n;
+  document.getElementById('wr-en').textContent=L.en;
+  document.getElementById('wr-fill').style.width=L.pct+'%';
+  document.getElementById('wr-pct').textContent=L.pct+'%';
+  document.getElementById('wr-cards').innerHTML=[
+    {l:'DIAGNOSIS · 意识诊断',v:L.desc},
+    {l:'NEXT LEVEL · 突破方向',v:lvl<9?`你距离 Level ${lvl+2}「${WL[lvl+1].n}」只差一次深度的潜意识重写。`:`你已处于最高维度，持续守护这份意识状态。`},
+    {l:'RECOMMENDATION · 建议',v:lvl<5?'建议从西塔疗愈开始，直接拔除底层限制性信念，一次疗愈能带来立竿见影的频率跃升。':lvl<8?'你适合6个月显化私教，系统性重写你的现实操作系统，稳固并扩展你的丰盛频率。':'你已具备主权陪伴的资质，欢迎与Mia深度探讨年度护航方案。'},
+  ].map(c=>`<div class="wr-card glass"><div class="wr-cl">${c.l}</div><div class="wr-cv">${c.v}</div></div>`).join('');
+}
+function wtReset(){
+  wtCur=0;wtAns={};
+  document.getElementById('wr').style.display='none';
+  document.getElementById('wqblock').style.display='block';
+  document.querySelector('.wt-nav').style.display='flex';
+  document.querySelector('.wt-progress').style.display='block';
+  renderWQ();
 }
 
+/* CHAT */
 let chatInit=false;
 function initChat(){
   chatInit=true;
-  addM('ai','欢迎进入潜意识挖掘空间。\n\n这里是安全的。你可以说出任何困扰你的事情——关于金钱、关系、事业，或者你说不清楚的那种感觉。\n\n我在。');
+  addM('ai','欢迎进入空无疗愈空间。\n\n这里没有评判，只有深度的看见。\n\n说出任何困扰你的事——金钱、关系、事业，或者你说不清楚的那种感觉。\n\n我在。');
 }
 function addM(role,txt){
   const c=document.getElementById('msgs');
@@ -283,18 +473,13 @@ function showTyp(){
   d.innerHTML='<span></span><span></span><span></span>';
   c.appendChild(d);c.scrollTop=c.scrollHeight;
 }
-
 async function send(){
   const inp=document.getElementById('cin');
   const txt=inp.value.trim();
   if(!txt)return;
   addM('me',txt);inp.value='';showTyp();
   try{
-    const res=await fetch('/api/chat',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({message:txt})
-    });
+    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:txt})});
     const data=await res.json();
     const t=document.getElementById('typ');if(t)t.remove();
     addM('ai',data.reply||'无法获取回复，请稍后再试。');
@@ -304,23 +489,61 @@ async function send(){
   }
 }
 
+/* ABOUT */
+let aboutInit=false;
+const PRODS=[
+  {n:'造物主 AI',p:'¥398 / 月',d:'24小时潜意识专属咨询入口。深度识别你的个性化意识卡点，生成专属潜意识诊断报告。\n\nAI能解决20%的共性问题，剩下80%需要真正的手术。'},
+  {n:'塔罗 · 禅卡精批',p:'¥1,280 起 / 次',d:'韦特塔罗：三维世界客观事件推演，洞悉事态发展的核心脉络。\n\n奥修禅卡：潜意识底层情绪与灵魂暗面挖掘，直面内在的真实自我。\n\n不是算命，是照镜子。'},
+  {n:'西塔疗愈',p:'¥12,800 / 次',d:'在4-7Hz Theta脑波状态下，大脑防御彻底松弛，直达潜意识程序层。\n\n精准识别并瞬间拔除限制性信念，下载新的神经连接。\n\n非意识说服，是直接改写。'},
+  {n:'萨满深度清理',p:'¥298,000 · 6次全套',d:'力量动物召回，重联原始守护能量\n底层业力木马抽除，解锁命运深层卡点\n家族诅咒链条切断，终结代际负面传承\n灵魂碎片寻回与整合\n脉轮卡点深度清理'},
+  {n:'6个月显化私教',p:'¥88,800',d:'第一步：找到你真正的卡点（1v1禅卡挖掘×3次）\n第二步：系统清理底层程序（潜意识重构×4次 + 萨满×1次）\n第三步：建立新的运行系统（显化课程 + 深度反馈）\n第四步：6个月全程陪跑'},
+  {n:'年度主权护航',p:'¥388,000',d:'The Sovereign Matrix\n\n萨满疗愈6次 · 西塔每月2次不限次 · 专属显化私教全程陪伴 · 定制Sub潜意识音轨季度更新 · 芳香疗愈定制精油 · 星盘/八字/奇门深度解析 · 商业战略高维陪伴24小时优先响应\n\n严格验资 · 限额接受'},
+  {n:'百万主权矩阵',p:'定制报价 · By Invitation Only',d:'THE SOVEREIGN ARCHITECTURE\n\n此方案没有固定清单。\n\n在深度能量评估之后，Mia将基于你的个人频率场、家族业力结构、商业能量场域与未来显化蓝图，亲自为你设计一套完整的意识工程方案。\n\n每一个交付物，都因你而生。\n\n— 个人能量原型诊断与全维度重构\n— 家族业力深度回溯与代际清理\n— 企业/事业场域能量排列与重组\n— 跨越时间线的显化蓝图激活\n\n此方案不公开定价。\n接受方式：提交能量申请表 → Mia本人审阅 → 决定是否接受。\n\n不是所有人都准备好了。'},
+];
+function initAbout(){
+  aboutInit=true;
+  const pl=document.getElementById('prodlist');
+  pl.innerHTML=PRODS.map((p,i)=>`
+    <div class="prod-item glass" id="pi${i}">
+      <div class="prod-header" onclick="toggleProd(${i})">
+        <div>
+          <div class="prod-name">${p.n}</div>
+          <div class="prod-price">${p.p}</div>
+        </div>
+        <div class="prod-arrow" id="pa${i}">▶</div>
+      </div>
+      <div class="prod-body" id="pb${i}" style="white-space:pre-wrap">${p.d}</div>
+    </div>`).join('');
+}
+function toggleProd(i){
+  const b=document.getElementById(`pb${i}`);
+  const a=document.getElementById(`pa${i}`);
+  b.classList.toggle('open');
+  a.classList.toggle('open');
+}
+
+/* AUDIO */
 let audioInit=false,playing=false,selTrk=0,piv,cur=0,tot=600;
 let audioCtx,oscL,oscR,gainNode;
 const TRK=[
-  {n:'财富绝对坍缩频段',hz:'432 Hz · Abundance Frequency',freq:432},
-  {n:'Alpha 主权夺回频段',hz:'528 Hz · DNA Repair Frequency',freq:528},
-  {n:'恐惧切断与深度休眠',hz:'174 Hz · Foundation Frequency',freq:174},
-  {n:'潜意识根目录重写',hz:'396 Hz · Liberation Frequency',freq:396}
+  {n:'财富绝对坍缩频段',hz:'432 Hz · Abundance',freq:432},
+  {n:'Alpha 主权夺回频段',hz:'528 Hz · DNA Repair',freq:528},
+  {n:'恐惧切断与深度休眠',hz:'174 Hz · Foundation',freq:174},
+  {n:'潜意识根目录重写',hz:'396 Hz · Liberation',freq:396}
 ];
 function initAudio(){
   audioInit=true;
-  document.getElementById('tlist').innerHTML=TRK.map((t,i)=>`<div class="ti glass ${i===0?'sel':''}" onclick="selTk(${i})"><div class="td2"></div><div class="tinfo"><div class="tn">${t.n}</div><div class="thz">${t.hz}</div></div></div>`).join('');
+  document.getElementById('tlist').innerHTML=TRK.map((t,i)=>`
+    <div class="ti glass ${i===0?'sel':''}" onclick="selTk(${i})">
+      <div class="tdot"></div>
+      <div class="tinfo"><div class="tn">${t.n}</div><div class="thz">${t.hz}</div></div>
+    </div>`).join('');
 }
 function selTk(i){selTrk=i;cur=0;updP();document.querySelectorAll('.ti').forEach((el,x)=>el.classList.toggle('sel',x===i))}
 function startFreq(hz){
   stopFreq();
   audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-  gainNode=audioCtx.createGain();gainNode.gain.value=0.12;gainNode.connect(audioCtx.destination);
+  gainNode=audioCtx.createGain();gainNode.gain.value=0.1;gainNode.connect(audioCtx.destination);
   oscL=audioCtx.createOscillator();oscL.frequency.value=hz;oscL.type='sine';
   const pL=audioCtx.createStereoPanner();pL.pan.value=-1;oscL.connect(pL).connect(gainNode);oscL.start();
   oscR=audioCtx.createOscillator();oscR.frequency.value=hz+10;oscR.type='sine';
