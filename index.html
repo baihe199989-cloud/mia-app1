@@ -112,6 +112,12 @@ canvas#sc{position:fixed;inset:0;z-index:0}
   font-size:11px;letter-spacing:.2em;cursor:pointer;font-family:inherit;transition:all .3s}
 .wr-cta:hover{background:rgba(201,168,76,.22);box-shadow:0 0 24px rgba(201,168,76,.25)}
 
+/* VOICE CALL */
+.vcall-log{flex:1;overflow-y:auto;padding:0 20px;display:flex;flex-direction:column;gap:10px;scrollbar-width:none;margin-bottom:12px}
+.vcall-log::-webkit-scrollbar{display:none}
+.vmsg{max-width:80%;border-radius:12px;padding:10px 14px;font-size:12px;line-height:1.8;letter-spacing:.03em;white-space:pre-wrap}
+.vmsg.ai{align-self:flex-start;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.1);color:rgba(255,255,255,.7);border-bottom-left-radius:4px}
+.vmsg.me{align-self:flex-end;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.15);color:rgba(255,255,255,.8);border-bottom-right-radius:4px}
 /* VOID HEALING / CHAT */
 #void{display:flex;flex-direction:column;padding:52px 0 72px}
 .void-hd{padding:0 20px 16px;text-align:center;flex-shrink:0}
