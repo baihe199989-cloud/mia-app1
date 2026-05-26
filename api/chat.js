@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -9,6 +8,7 @@ export default async function handler(req, res) {
   const { message } = req.body;
 
   try {
+    // 第一步：发起对话
     const chatRes = await fetch('https://api.coze.com/v3/chat', {
       method: 'POST',
       headers: {
@@ -28,37 +28,58 @@ export default async function handler(req, res) {
       })
     });
 
-    const chatData = await chatRes.json();
-    const chatId = chatData.data.id;
-    const convId = chatData.data.conversation_id;
+    const chatJson = await chatRes.json();
+    console.log('Chat response:', JSON.stringify(chatJson));
 
+    // 兼容不同的返回格式
+    const chatId = chatJson?.data?.id || chatJson?.id;
+    const convId = chatJson?.data?.conversation_id || chatJson?.conversation_id;
+
+    if (!chatId || !convId) {
+      console.error('Missing chatId or convId:', chatJson);
+      return res.json({ reply: '对话初始化失败，请稍后再试。' });
+    }
+
+    // 第二步：轮询等待回复
     let reply = '能量正在传递中…';
     for (let i = 0; i < 30; i++) {
-      await new Promise(r => setTimeout(r, 600));
+      await new Promise(r => setTimeout(r, 800));
 
       const statusRes = await fetch(
         `https://api.coze.com/v3/chat/retrieve?chat_id=${chatId}&conversation_id=${convId}`,
         { headers: { 'Authorization': `Bearer ${process.env.COZE_TOKEN}` } }
       );
-      const statusData = await statusRes.json();
+      const statusJson = await statusRes.json();
+      console.log('Status:', statusJson?.data?.status || statusJson?.status);
 
-      if (statusData.data.status === 'completed') {
+      const status = statusJson?.data?.status || statusJson?.status;
+
+      if (status === 'completed') {
         const msgRes = await fetch(
           `https://api.coze.com/v3/chat/message/list?chat_id=${chatId}&conversation_id=${convId}`,
           { headers: { 'Authorization': `Bearer ${process.env.COZE_TOKEN}` } }
         );
-        const msgData = await msgRes.json();
-        const aiMsg = msgData.data.find(m => m.role === 'assistant' && m.type === 'answer');
+        const msgJson = await msgRes.json();
+        console.log('Messages:', JSON.stringify(msgJson));
+
+        const messages = msgJson?.data || msgJson?.messages || [];
+        const aiMsg = messages.find(m =>
+          m.role === 'assistant' && m.type === 'answer'
+        );
         if (aiMsg) reply = aiMsg.content;
         break;
       }
 
-      if (statusData.data.status === 'failed') break;
+      if (status === 'failed' || status === 'error') {
+        console.error('Chat failed:', statusJson);
+        break;
+      }
     }
 
     res.json({ reply });
 
   } catch (e) {
+    console.error('Handler error:', e.message);
     res.status(500).json({ reply: '链接暂时中断，请稍后再试。' });
   }
 }
