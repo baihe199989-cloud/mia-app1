@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
   try {
     // 第一步：发起对话
-    const chatRes = await fetch('https://api.coze.cn/v3/chat', {
+    const chatRes = await fetch('https://api.coze.com/v3/chat', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.COZE_TOKEN}`,
