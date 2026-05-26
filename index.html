@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>8D 显化 · COSMIC VOID</title>
+<style>
+:root{--void:#0B0715;--deep:#030209;--p:#8B5CF6;--p2:#6D28D9;--pg:rgba(139,92,246,0.18);--pgf:rgba(139,92,246,0.06);--gold:#C9A84C;--gf:rgba(201,168,76,0.08);--t:rgba(255,255,255,0.88);--td:rgba(255,255,255,0.4);--tf:rgba(255,255,255,0.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:var(--deep);color:var(--t);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Arial,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased}
+#cosmos{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 25% 20%,rgba(88,28,135,.18) 0%,transparent 55%),radial-gradient(ellipse at 75% 80%,rgba(59,7,100,.14) 0%,transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(15,5,30,.9) 0%,transparent 100%),linear-gradient(180deg,#0B0715 0%,#030209 100%)}
+#sc{position:fixed;inset:0;z-index:1;opacity:.55}
+#app{position:relative;z-index:2;width:100%;height:100%}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;padding-bottom:72px;opacity:0;pointer-events:none;transition:opacity .5s ease;overflow-y:auto}
+.screen.active{opacity:1;pointer-events:all}
+.screen::-webkit-scrollbar{width:2px}
+.screen::-webkit-scrollbar-thumb{background:rgba(139,92,246,.25);border-radius:1px}
+#nav{position:fixed;bottom:0;left:0;right:0;height:72px;z-index:100;display:flex;align-items:center;justify-content:space-around;background:rgba(8,4,18,.9);backdrop-filter:blur(24px);border-top:1px solid rgba(139,92,246,.06)}
+.ni{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:8px 14px;opacity:.3;transition:all .3s}
+.ni.active{opacity:1}.ni:hover{opacity:.65;transform:translateY(-2px)}
+.ni-ic{font-size:17px}.ni-lb{font-size:8px;letter-spacing:.12em;color:rgba(255,255,255,.5)}
+.ni.active .ni-lb{color:var(--p)}
+.glass{background:var(--pgf);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(139,92,246,.1);border-radius:16px}
+.glow{text-shadow:0 0 24px rgba(139,92,246,.7),0 0 48px rgba(139,92,246,.3)}
+.lbl{font-size:9px;letter-spacing:.5em;color:var(--p);opacity:.7;text-transform:uppercase;margin-bottom:8px}
+.ttl{font-size:22px;font-weight:200;letter-spacing:.1em}
+#home{align-items:center;justify-content:center;gap:48px}
+.hd{text-align:center}
+.ht{font-size:44px;font-weight:200;letter-spacing:.35em;margin-bottom:6px}
+.hs{font-size:9px;letter-spacing:.6em;color:var(--p);opacity:.6;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 28px;max-width:380px;width:100%}
+.pc{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;border-radius:20px;transition:transform .4s,box-shadow .4s}
+.pc:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 24px 64px rgba(139,92,246,.25)}
+.pc:nth-child(1){animation:fl 4s ease-in-out infinite}
+.pc:nth-child(2){animation:fl 4s ease-in-out infinite .8s}
+.pc:nth-child(3){animation:fl 4s ease-in-out infinite 1.6s}
+.pc:nth-child(4){animation:fl 4s ease-in-out infinite 2.4s}
+.pi{font-size:26px;filter:drop-shadow(0 0 8px rgba(139,92,246,.7))}
+.pn{font-size:11px;letter-spacing:.12em;color:var(--td);text-align:center}
+.pnum{font-size:9px;letter-spacing:.3em;color:var(--p);opacity:.5}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+#test{padding:56px 22px 80px}
+.sh{text-align:center;margin-bottom:32px}
+.qb{margin-bottom:22px}
+.qt{font-size:13px;letter-spacing:.04em;color:rgba(255,255,255,.72);margin-bottom:12px;line-height:1.7}
+.qopts{display:flex;flex-direction:column;gap:7px}
+.qo{padding:11px 15px;border-radius:10px;cursor:pointer;font-size:12px;letter-spacing:.04em;color:rgba(255,255,255,.45);border:1px solid rgba(139,92,246,.07);background:rgba(139,92,246,.025);transition:all .22s}
+.qo:hover{border-color:rgba(139,92,246,.28);color:rgba(255,255,255,.78);background:rgba(139,92,246,.07)}
+.qo.sel{border-color:rgba(139,92,246,.5);background:rgba(139,92,246,.12);color:var(--t)}
+.sbtn{width:100%;padding:13px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.35);border-radius:12px;color:var(--p);font-size:11px;letter-spacing:.2em;cursor:pointer;margin-top:6px;transition:all .3s;font-family:inherit}
+.sbtn:hover{background:rgba(139,92,246,.2);box-shadow:0 0 20px rgba(139,92,246,.3)}
+.rcw{display:flex;justify-content:center;margin:16px 0}
+.ra{text-align:center;margin-bottom:20px}
+.rt{font-size:26px;font-weight:200;letter-spacing:.15em;margin-bottom:3px}
+.ren{font-size:9px;letter-spacing:.4em;color:var(--p);opacity:.6}
+.rcs{display:flex;flex-direction:column;gap:10px}
+.rc{padding:14px 16px;border-radius:12px}
+.rcl{font-size:8px;letter-spacing:.35em;color:var(--p);text-transform:uppercase;margin-bottom:5px}
+.rcv{font-size:12px;letter-spacing:.04em;color:rgba(255,255,255,.7);line-height:1.7}
+#voice{align-items:center;justify-content:center}
+.vc{display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center;padding:60px 32px 0}
+.vs{font-size:9px;letter-spacing:.4em;color:var(--p);opacity:.6}
+.vbtn{width:60px;height:60px;border-radius:50%;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.28);color:var(--p);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .35s;box-shadow:0 0 20px rgba(139,92,246,.08)}
+.vbtn:hover{transform:scale(1.06);box-shadow:0 0 36px rgba(139,92,246,.3)}
+.vbtn.on{background:rgba(139,92,246,.22);box-shadow:0 0 50px rgba(139,92,246,.5),0 0 90px rgba(139,92,246,.18);animation:pb 2.5s ease-in-out infinite}
+.vh{font-size:11px;letter-spacing:.08em;color:rgba(255,255,255,.22);max-width:220px;line-height:1.9}
+@keyframes pb{0%,100%{box-shadow:0 0 30px rgba(139,92,246,.4)}50%{box-shadow:0 0 60px rgba(139,92,246,.7),0 0 80px rgba(139,92,246,.25)}}
+#chat{display:flex;flex-direction:column;padding:56px 0 72px}
+.ch{padding:0 22px 18px;text-align:center;flex-shrink:0}
+.cm{flex:1;overflow-y:auto;padding:0 18px;display:flex;flex-direction:column;gap:12px;scrollbar-width:none}
+.cm::-webkit-scrollbar{display:none}
+.msg{max-width:84%;border-radius:14px;padding:11px 15px;font-size:13px;line-height:1.85;letter-spacing:.03em;white-space:pre-wrap}
+.msg.ai{align-self:flex-start;background:rgba(139,92,246,.055);border:1px solid rgba(139,92,246,.1);color:rgba(255,255,255,.78);border-bottom-left-radius:4px}
+.msg.me{align-self:flex-end;background:rgba(139,92,246,.14);border:1px solid rgba(139,92,246,.22);color:rgba(255,255,255,.88);border-bottom-right-radius:4px}
+.ciw{padding:10px 18px 0;display:flex;gap:9px;align-items:center;flex-shrink:0}
+.ci{flex:1;padding:11px 15px;background:rgba(139,92,246,.04);border:1px solid rgba(139,92,246,.1);border-radius:12px;color:var(--t);font-size:13px;outline:none;font-family:inherit;letter-spacing:.03em}
+.ci::placeholder{color:rgba(255,255,255,.18)}
+.cs{width:38px;height:38px;border-radius:50%;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.28);color:var(--p);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0}
+.cs:hover{background:rgba(139,92,246,.22);box-shadow:0 0 14px rgba(139,92,246,.3)}
+.typing{display:flex;gap:5px;padding:12px 15px;align-self:flex-start;background:rgba(139,92,246,.055);border:1px solid rgba(139,92,246,.1);border-radius:14px;border-bottom-left-radius:4px}
+.typing span{width:5px;height:5px;border-radius:50%;background:rgba(139,92,246,.5);animation:td 1.2s ease-in-out infinite}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes td{0%,80%,100%{opacity:.2;transform:scale(1)}40%{opacity:1;transform:scale(1.25)}}
+#as{align-items:center;justify-content:center;overflow:hidden}
+#aurora{position:absolute;inset:0;z-index:0;opacity:0;transition:opacity 2s ease;background:radial-gradient(ellipse at 20% 30%,rgba(88,28,135,.5) 0%,transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(109,40,217,.35) 0%,transparent 50%),radial-gradient(ellipse at 55% 45%,rgba(201,168,76,.06) 0%,transparent 55%);animation:as 9s ease-in-out infinite}
+#aurora.on{opacity:1}
+@keyframes as{0%,100%{background:radial-gradient(ellipse at 20% 30%,rgba(88,28,135,.5) 0%,transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(109,40,217,.35) 0%,transparent 50%),radial-gradient(ellipse at 55% 45%,rgba(201,168,76,.06) 0%,transparent 55%)}33%{background:radial-gradient(ellipse at 65% 20%,rgba(109,40,217,.42) 0%,transparent 50%),radial-gradient(ellipse at 25% 80%,rgba(88,28,135,.32) 0%,transparent 50%),radial-gradient(ellipse at 70% 55%,rgba(201,168,76,.07) 0%,transparent 50%)}66%{background:radial-gradient(ellipse at 75% 65%,rgba(124,58,237,.45) 0%,transparent 50%),radial-gradient(ellipse at 18% 35%,rgba(76,29,149,.3) 0%,transparent 50%),radial-gradient(ellipse at 45% 28%,rgba(201,168,76,.05) 0%,transparent 52%)}}
+.pw{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:24px;width:100%;padding:0 28px}
+.tl{width:100%;display:flex;flex-direction:column;gap:9px}
+.ti{padding:13px 16px;border-radius:12px;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:13px}
+.ti.sel{border-color:rgba(139,92,246,.4)!important;background:rgba(139,92,246,.1)!important}
+.td2{width:5px;height:5px;border-radius:50%;background:rgba(139,92,246,.3);flex-shrink:0;transition:all .3s}
+.ti.sel .td2{background:var(--p);box-shadow:0 0 8px rgba(139,92,246,.9)}
+.tinfo{flex:1}
+.tn{font-size:12px;letter-spacing:.07em;color:rgba(255,255,255,.65)}
+.thz{font-size:9px;letter-spacing:.2em;color:var(--p);opacity:.55;margin-top:2px}
+.pc2{display:flex;flex-direction:column;align-items:center;gap:18px;width:100%}
+.pb2{width:100%;height:1px;background:rgba(139,92,246,.14);border-radius:1px;cursor:pointer;position:relative}
+.pf{height:100%;background:linear-gradient(90deg,var(--p2),var(--p));border-radius:1px;width:0%;box-shadow:0 0 6px rgba(139,92,246,.7);transition:width .5s linear;position:relative}
+.pf::after{content:'';position:absolute;right:-3px;top:-3px;width:7px;height:7px;border-radius:50%;background:var(--p);box-shadow:0 0 10px rgba(139,92,246,1)}
+.tr{display:flex;justify-content:space-between;width:100%;font-size:9px;letter-spacing:.15em;color:rgba(255,255,255,.22);margin-top:7px}
+.playbtn{width:68px;height:68px;border-radius:50%;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.28);color:var(--p);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .4s}
+.playbtn.on{background:rgba(139,92,246,.2);box-shadow:0 0 40px rgba(139,92,246,.45),0 0 80px rgba(139,92,246,.15);animation:pb 3s ease-in-out infinite}
+</style>
+</head>
+<body>
+<div id="cosmos"></div>
+<canvas id="sc"></canvas>
+<div id="app">
+  <div class="screen active" id="home">
+    <div class="hd"><div class="ht glow">8D 显化</div><div class="hs">Cosmic Void Project · 宇宙虚空计划</div></div>
+    <div class="grid">
+      <div class="pc glass" onclick="go('test')"><div class="pi">⬡</div><div class="pn">能量场测试</div><div class="pnum">01</div></div>
+      <div class="pc glass" onclick="go('voice')"><div class="pi">◎</div><div class="pn">高维链接</div><div class="pnum">02</div></div>
+      <div class="pc glass" onclick="go('chat')"><div class="pi">✦</div><div class="pn">潜意识挖掘</div><div class="pnum">03</div></div>
+      <div class="pc glass" onclick="go('as')"><div class="pi">∞</div><div class="pn">8D 显化站</div><div class="pnum">04</div></div>
+    </div>
+  </div>
+  <div class="screen" id="test">
+    <div class="sh"><div class="lbl">5D Geometry Test</div><div class="ttl">能量原型测试</div></div>
+    <div id="tq" style="padding:0 22px"></div>
+    <div id="rv" style="padding:0 22px;display:none">
+      <div class="rcw"><canvas id="gc" width="190" height="190"></canvas></div>
+      <div class="ra"><div class="rt" id="rtype">—</div><div class="ren" id="ren">—</div></div>
+      <div class="rcs" id="rcards"></div>
+      <button class="sbtn glass" style="margin-top:22px" onclick="resetT()">重新测试 →</button>
+    </div>
+  </div>
+  <div class="screen" id="voice">
+    <div class="vc">
+      <div class="sh"><div class="lbl">Higher Self Connection</div><div class="ttl">高维链接</div></div>
+      <div class="vs" id="vstatus">等待链接</div>
+      <canvas id="wc" width="210" height="210"></canvas>
+      <button class="vbtn" id="vbtn" onclick="toggleV()">◎</button>
+      <p class="vh">点击启动跨维度语音通话<br>与更高自我建立实时连接</p>
+    </div>
+  </div>
+  <div class="screen" id="chat">
+    <div class="ch"><div class="lbl">Subconscious Excavation</div><div class="ttl" style="font-size:20px">潜意识挖掘</div></div>
+    <div class="cm" id="msgs"></div>
+    <div class="ciw">
+      <input class="ci" id="cin" placeholder="输入你的意识困境…" onkeydown="if(event.key==='Enter')send()">
+      <button class="cs" onclick="send()">↑</button>
+    </div>
+  </div>
+  <div class="screen" id="as">
+    <div id="aurora"></div>
+    <div class="pw">
+      <div class="sh" style="text-align:center"><div class="lbl">Manifestation Station</div><div class="ttl">8D 显化频率</div></div>
+      <div class="tl" id="tlist"></div>
+      <div class="pc2">
+        <div style="width:100%">
+          <div class="pb2"><div class="pf" id="pf"></div></div>
+          <div class="tr"><span id="tc">0:00</span><span id="tt">10:00</span></div>
+        </div>
+        <button class="playbtn glass" id="pbtn" onclick="toggleP()">▶</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="nav">
+  <div class="ni active" data-s="home" onclick="go('home')"><span class="ni-ic">⬡</span><span class="ni-lb">宇宙门户</span></div>
+  <div class="ni" data-s="test" onclick="go('test')"><span class="ni-ic">◈</span><span class="ni-lb">能量测试</span></div>
+  <div class="ni" data-s="voice" onclick="go('voice')"><span class="ni-ic">◎</span><span class="ni-lb">高维链接</span></div>
+  <div class="ni" data-s="chat" onclick="go('chat')"><span class="ni-ic">✦</span><span class="ni-lb">潜意识</span></div>
+  <div class="ni" data-s="as" onclick="go('as')"><span class="ni-ic">∞</span><span class="ni-lb">8D 显化</span></div>
+</div>
+<script>
+const sc=document.getElementById('sc'),sx=sc.getContext('2d');
+let stars=[];
+function rsz(){sc.width=innerWidth;sc.height=innerHeight;stars=Array.from({length:130},()=>({x:Math.random()*sc.width,y:Math.random()*sc.height,r:.2+Math.random()*1.1,a:Math.random(),sp:.003+Math.random()*.005,ph:Math.random()*Math.PI*2}))}
+function drawStars(t){sx.clearRect(0,0,sc.width,sc.height);stars.forEach(s=>{const a=s.a*(.35+.65*Math.abs(Math.sin(t*s.sp+s.ph)));sx.beginPath();sx.arc(s.x,s.y,s.r,0,Math.PI*2);sx.fillStyle=`rgba(210,190,255,${a})`;sx.fill()});requestAnimationFrame(drawStars)}
+window.addEventListener('resize',rsz);rsz();drawStars(0);
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.ni').forEach(n=>n.classList.toggle('active',n.dataset.s===id));
+  if(id==='chat'&&!chatInit)initChat();
+  if(id==='test'&&!testInit)initTest();
+  if(id==='as'&&!audioInit)initAudio();
+  if(id==='voice')startWave();
+}
+
+let testInit=false,ans={};
+const Qs=[
+  {id:'q1',t:'独处时，你最自然进入哪种状态？',opts:[{t:'燃烧的灵感与创造欲',v:'fire'},{t:'深邃的情感流动',v:'water'},{t:'踏实专注与执行力',v:'earth'},{t:'宏观思考与洞察',v:'air'},{t:'空灵的虚无与清明',v:'void'}]},
+  {id:'q2',t:'面对生命的重大障碍，你的本能是？',opts:[{t:'燃起斗志，正面突破',v:'fire'},{t:'感受它，让情感带你穿越',v:'water'},{t:'拆解步骤，稳步前行',v:'earth'},{t:'跳出局限，找到新视角',v:'air'},{t:'归于寂静，等待答案浮现',v:'void'}]},
+  {id:'q3',t:'你灵魂最深处渴望的是？',opts:[{t:'力量与影响力的彰显',v:'fire'},{t:'深度连接与被完全接纳',v:'water'},{t:'稳固的安全感与丰盛',v:'earth'},{t:'自由与无限的可能性',v:'air'},{t:'与万物合一的大融合',v:'void'}]},
+  {id:'q4',t:'你最常面临的内在挑战？',opts:[{t:'过于激烈，容易灼伤自己',v:'fire'},{t:'情绪起伏，容易被淹没',v:'water'},{t:'固执停滞，难以接受变化',v:'earth'},{t:'散漫失焦，想法难以落地',v:'air'},{t:'与现实脱节，难以被看见',v:'void'}]},
+  {id:'q5',t:'你的显化风格最接近哪种？',opts:[{t:'强烈意图 + 大胆行动',v:'fire'},{t:'深度感受 + 情感引导',v:'water'},{t:'清晰计划 + 持续积累',v:'earth'},{t:'高维视野 + 灵感驱动',v:'air'},{t:'臣服放下 + 允许发生',v:'void'}]}
+];
+const AR={
+  fire:{cn:'烈火显化者',en:'Fire Manifestor',light:'天生开拓者，创造力与意志力是你的超能力',shadow:'容易因急于求成而燃尽自己，需要学习等待的艺术',dir:'将你的烈火转为圣火——有节律地燃烧，而非暴燃',law:'行动法则：你的显化通过大胆的第一步被激活',col:['#FF7043','#E64A19']},
+  water:{cn:'流水感知者',en:'Water Perceiver',light:'极深的共情直觉，你能感知他人无法触碰的频率',shadow:'情绪的深海有时会将你淹没，边界感需要被建立',dir:'让情感成为罗盘而非牢笼，在感受中保持核心稳定',law:'感受法则：进入你渴望现实的感受，显化便自然流来',col:['#4FC3F7','#0288D1']},
+  earth:{cn:'大地守护者',en:'Earth Guardian',light:'稳固的落地力，你能将最宏大的愿景变为可操作的现实',shadow:'对安全感的执着有时会阻挡更大的跃迁机会',dir:'信任你的根基，然后允许自己生长进入未知的高度',law:'积累法则：每一个细小而一致的行动，都是向宇宙下达的订单',col:['#81C784','#388E3C']},
+  air:{cn:'风之思想者',en:'Air Thinker',light:'超越时代的远见卓识，你的思想是人类意识的前锋',shadow:'思想过于超前，难以与当下现实频率对接',dir:'将你的远见下载到身体，让它在呼吸与感受中生根落地',law:'意识法则：你的显化始于一个清晰而震撼的内在意象',col:['#CE93D8','#7B1FA2']},
+  void:{cn:'虚空创造者',en:'Void Creator',light:'你是最高维度的通道，万物皆从你内在的空中生发',shadow:'深度的空可能让他人无法触及你，孤独是你最深的功课',dir:'允许自己被看见，你的存在本身就是一个奇迹场',law:'臣服法则：放下对显化的执着，让宇宙用超乎想象的方式成全你',col:['#9575CD','#4527A0']}
+};
+
+function initTest(){
+  testInit=true;
+  const c=document.getElementById('tq');
+  c.innerHTML=Qs.map(q=>`<div class="qb"><div class="qt">${q.t}</div><div class="qopts">${q.opts.map(o=>`<div class="qo" onclick="selO('${q.id}','${o.v}',this)">${o.t}</div>`).join('')}</div></div>`).join('')+`<button class="sbtn glass" onclick="subT()">解析我的5D原型 →</button>`;
+}
+function selO(qid,val,el){ans[qid]=val;el.closest('.qopts').querySelectorAll('.qo').forEach(o=>o.classList.remove('sel'));el.classList.add('sel')}
+function subT(){
+  const cnt={};Object.values(ans).forEach(v=>cnt[v]=(cnt[v]||0)+1);
+  const dom=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0];
+  if(!dom){return alert('请完成所有5个问题');}
+  const a=AR[dom[0]];
+  document.getElementById('tq').style.display='none';
+  const rv=document.getElementById('rv');rv.style.display='block';
+  document.getElementById('rtype').textContent=a.cn;
+  document.getElementById('ren').textContent=a.en;
+  document.getElementById('rcards').innerHTML=[
+    {l:'LIGHT POINT · 发光点',v:a.light},{l:'SHADOW · 核心卡点',v:a.shadow},
+    {l:'EVOLUTION · 进化方向',v:a.dir},{l:'COSMIC LAW · 专属显化法则',v:a.law}
+  ].map(c=>`<div class="rc glass"><div class="rcl">${c.l}</div><div class="rcv">${c.v}</div></div>`).join('');
+  drawGeo(dom[0]);
+}
+function resetT(){ans={};document.getElementById('tq').style.display='block';document.querySelectorAll('.qo').forEach(o=>o.classList.remove('sel'));document.getElementById('rv').style.display='none'}
+function drawGeo(type){
+  const cv=document.getElementById('gc'),ctx=cv.getContext('2d');
+  const[c1]=AR[type].col;const cx=95,cy=95;let t=0;
+  function frame(){
+    ctx.clearRect(0,0,190,190);
+    const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,90);
+    grd.addColorStop(0,c1+'18');grd.addColorStop(1,'transparent');
+    ctx.fillStyle=grd;ctx.beginPath();ctx.arc(cx,cy,90,0,Math.PI*2);ctx.fill();
+    for(let r=0;r<7;r++){
+      const rad=15+r*11,a=.08+r*.025,off=t*(.007*(r%2===0?1:-1))+r*Math.PI/7;
+      ctx.beginPath();
+      for(let i=0;i<=6;i++){const ang=(i/6)*Math.PI*2+off;ctx.lineTo(cx+rad*Math.cos(ang),cy+rad*Math.sin(ang));}
+      ctx.closePath();ctx.strokeStyle=c1+Math.round(a*255).toString(16).padStart(2,'0');
+      ctx.lineWidth=.6;ctx.shadowColor=c1;ctx.shadowBlur=5;ctx.stroke();ctx.shadowBlur=0;
+    }
+    for(let i=0;i<6;i++){const ang=(i/6)*Math.PI*2+t*.004;ctx.beginPath();ctx.arc(cx+28*Math.cos(ang),cy+28*Math.sin(ang),22,0,Math.PI*2);ctx.strokeStyle=c1+'22';ctx.lineWidth=.4;ctx.stroke()}
+    ctx.beginPath();ctx.arc(cx,cy,4,0,Math.PI*2);ctx.fillStyle=c1;ctx.shadowColor=c1;ctx.shadowBlur=14;ctx.fill();ctx.shadowBlur=0;
+    t++;requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+let vOn=false,wStarted=false;
+function toggleV(){
+  vOn=!vOn;
+  const b=document.getElementById('vbtn'),s=document.getElementById('vstatus');
+  b.classList.toggle('on',vOn);
+  s.textContent=vOn?'正在链接高维频率…':'等待链接';
+  if(vOn)setTimeout(()=>{if(vOn)s.textContent='链接已建立 · 高维通话中'},1800);
+}
+function startWave(){
+  if(wStarted)return;wStarted=true;
+  const cv=document.getElementById('wc'),ctx=cv.getContext('2d');
+  const w=210,h=210,cx=w/2,cy=h/2;let t=0;
+  function frame(){
+    ctx.clearRect(0,0,w,h);
+    const rings=vOn?5:2;
+    for(let i=0;i<rings;i++){const p=((t*.007+i/rings)%1),r=18+p*80,a=(1-p)*(vOn?.3:.12);ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.strokeStyle=`rgba(139,92,246,${a})`;ctx.lineWidth=.8;ctx.stroke()}
+    ctx.beginPath();
+    const amp=vOn?20:4,fr=.04;
+    for(let x=28;x<w-28;x++){const y=cy+amp*Math.sin(x*fr+t*.07)*Math.sin(x*.014+t*.022);x===28?ctx.moveTo(x,y):ctx.lineTo(x,y)}
+    ctx.strokeStyle=vOn?'rgba(139,92,246,.65)':'rgba(139,92,246,.18)';ctx.lineWidth=1;ctx.shadowColor='rgba(139,92,246,.5)';ctx.shadowBlur=vOn?7:2;ctx.stroke();ctx.shadowBlur=0;
+    ctx.beginPath();ctx.arc(cx,cy,vOn?5:2.5,0,Math.PI*2);ctx.fillStyle=`rgba(139,92,246,${vOn?.85:.3})`;ctx.shadowColor='rgba(139,92,246,.9)';ctx.shadowBlur=vOn?14:5;ctx.fill();ctx.shadowBlur=0;
+    t++;requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+let chatInit=false;
+function initChat(){
+  chatInit=true;
+  addM('ai','欢迎进入潜意识挖掘空间。\n\n这里是安全的。你可以说出任何困扰你的事情——关于金钱、关系、事业，或者你说不清楚的那种感觉。\n\n我在。');
+}
+function addM(role,txt){
+  const c=document.getElementById('msgs');
+  const d=document.createElement('div');d.className=`msg ${role}`;d.textContent=txt;
+  c.appendChild(d);c.scrollTop=c.scrollHeight;
+}
+function showTyp(){
+  const c=document.getElementById('msgs');
+  const d=document.createElement('div');d.className='typing';d.id='typ';
+  d.innerHTML='<span></span><span></span><span></span>';
+  c.appendChild(d);c.scrollTop=c.scrollHeight;
+}
+
+async function send(){
+  const inp=document.getElementById('cin');
+  const txt=inp.value.trim();
+  if(!txt)return;
+  addM('me',txt);inp.value='';showTyp();
+  try{
+    const res=await fetch('/api/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:txt})
+    });
+    const data=await res.json();
+    const t=document.getElementById('typ');if(t)t.remove();
+    addM('ai',data.reply||'无法获取回复，请稍后再试。');
+  }catch(e){
+    const t=document.getElementById('typ');if(t)t.remove();
+    addM('ai','链接暂时中断，请稍后再试。');
+  }
+}
+
+let audioInit=false,playing=false,selTrk=0,piv,cur=0,tot=600;
+let audioCtx,oscL,oscR,gainNode;
+const TRK=[
+  {n:'财富绝对坍缩频段',hz:'432 Hz · Abundance Frequency',freq:432},
+  {n:'Alpha 主权夺回频段',hz:'528 Hz · DNA Repair Frequency',freq:528},
+  {n:'恐惧切断与深度休眠',hz:'174 Hz · Foundation Frequency',freq:174},
+  {n:'潜意识根目录重写',hz:'396 Hz · Liberation Frequency',freq:396}
+];
+function initAudio(){
+  audioInit=true;
+  document.getElementById('tlist').innerHTML=TRK.map((t,i)=>`<div class="ti glass ${i===0?'sel':''}" onclick="selTk(${i})"><div class="td2"></div><div class="tinfo"><div class="tn">${t.n}</div><div class="thz">${t.hz}</div></div></div>`).join('');
+}
+function selTk(i){selTrk=i;cur=0;updP();document.querySelectorAll('.ti').forEach((el,x)=>el.classList.toggle('sel',x===i))}
+function startFreq(hz){
+  stopFreq();
+  audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  gainNode=audioCtx.createGain();gainNode.gain.value=0.12;gainNode.connect(audioCtx.destination);
+  oscL=audioCtx.createOscillator();oscL.frequency.value=hz;oscL.type='sine';
+  const pL=audioCtx.createStereoPanner();pL.pan.value=-1;oscL.connect(pL).connect(gainNode);oscL.start();
+  oscR=audioCtx.createOscillator();oscR.frequency.value=hz+10;oscR.type='sine';
+  const pR=audioCtx.createStereoPanner();pR.pan.value=1;oscR.connect(pR).connect(gainNode);oscR.start();
+}
+function stopFreq(){try{if(oscL)oscL.stop();if(oscR)oscR.stop();if(audioCtx)audioCtx.close();}catch(e){}}
+function toggleP(){
+  playing=!playing;
+  const b=document.getElementById('pbtn'),a=document.getElementById('aurora');
+  b.classList.toggle('on',playing);b.innerHTML=playing?'⏸':'▶';a.classList.toggle('on',playing);
+  if(playing){
+    startFreq(TRK[selTrk].freq);
+    piv=setInterval(()=>{cur++;if(cur>=tot){cur=0;playing=false;b.classList.remove('on');b.innerHTML='▶';a.classList.remove('on');clearInterval(piv);stopFreq();}updP();},1000);
+  }else{clearInterval(piv);stopFreq();}
+}
+function updP(){document.getElementById('pf').style.width=(cur/tot*100)+'%';document.getElementById('tc').textContent=fmt(cur);document.getElementById('tt').textContent=fmt(tot)}
+function fmt(s){return`${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`}
+</script>
+</body>
+</html>
